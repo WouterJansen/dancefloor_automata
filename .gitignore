@@ -43,3 +43,4 @@ tmtagsHistory
 # modules.xml
 # .idea/misc.xml 
 # *.ipr
+__pycache__/
