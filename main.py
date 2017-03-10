@@ -36,23 +36,56 @@ class Person:
         ran = random.uniform(0, 1)
         if neighbour.redLike >= neighbour.blueLike and neighbour.redLike >= neighbour.greenLike:
                 influencefactor = (0.5 * neighbour.redLike) + (0.5 * ran)
-                print("red dominate! NR:%f ran:%f I:%f R:%f B:%f G:%f" % (neighbour.redLike,ran,influencefactor,self.redLike,self.blueLike,self.greenLike))
+                # print("PIXEL %d %d" % (self.x,self.y))
+                # print("RED NR:%f ran:%f I:%f R:%f B:%f G:%f" % (neighbour.redLike,ran,influencefactor,self.redLike,self.blueLike,self.greenLike))
+                temp = self.redLike
                 self.redLike = (0.5 * self.redLike) + (0.5 * influencefactor)
-                self.blueLike -= (influencefactor / 4)
-                self.greenLike -= (influencefactor / 4)
-                print("red dominate! R:%f B:%f G:%f" % (self.redLike,self.blueLike,self.greenLike))
-
-
+                temp -= self.redLike
+                self.blueLike += (temp / 2)
+                self.greenLike += (temp / 2)
+                if self.blueLike < 0:
+                    self.greenLike += self.blueLike
+                    self.blueLike = 0
+                elif self.greenLike < 0:
+                    self.blueLike += self.greenLike
+                    self.greenLike = 0
+                if self.redLike < 0 or self.blueLike < 0 or self.greenLike < 0 or np.round(self.redLike + self.greenLike + self.blueLike) != 1.00000:
+                    print("RED WON R:%f B:%f G:%f T:%f counted: %f" % (self.redLike,self.blueLike,self.greenLike,temp,np.round(self.redLike + self.greenLike + self.blueLike)))
         elif neighbour.blueLike >= neighbour.redLike and neighbour.blueLike >= neighbour.greenLike:
                 influencefactor = (0.5 * neighbour.blueLike) + (0.5 * ran)
+                # print("PIXEL %d %d" % (self.x,self.y))
+                # print("BLUE NR:%f ran:%f I:%f R:%f B:%f G:%f" % (neighbour.blueLike,ran,influencefactor,self.redLike,self.blueLike,self.greenLike))
+                temp = self.blueLike
                 self.blueLike = (0.5 * self.blueLike) + (0.5 * influencefactor)
-                self.redLike -= (influencefactor / 4)
-                self.greenLike -= (influencefactor / 4)
+                temp -= self.blueLike
+                self.redLike += (temp / 2)
+                self.greenLike += (temp / 2)
+                if self.redLike < 0:
+                    self.greenLike += self.redLike
+                    self.redLike = 0
+                elif self.greenLike < 0:
+                    self.redLike += self.greenLike
+                    self.greenLike = 0
+                if self.redLike < 0 or self.blueLike < 0 or self.greenLike < 0 or np.round(self.redLike + self.greenLike + self.blueLike) != 1:
+                    print("BLUE WON R:%f B:%f G:%f T:%f counted: %f" % (self.redLike,self.blueLike,self.greenLike,temp,self.redLike + self.greenLike + self.blueLike))
         elif neighbour.greenLike >= neighbour.blueLike and neighbour.greenLike >= neighbour.redLike:
                 influencefactor = (0.5 * neighbour.greenLike) + (0.5 * ran)
+                # print("PIXEL %d %d" % (self.x,self.y))
+                # print("GREEN NR:%f ran:%f I:%f R:%f B:%f G:%f" % (neighbour.greenLike,ran,influencefactor,self.redLike,self.blueLike,self.greenLike))
+                temp = self.greenLike
                 self.greenLike = (0.5 * self.greenLike) + (0.5 * influencefactor)
-                self.redLike -= (influencefactor / 4)
-                self.blueLike -= (influencefactor / 4)
+                temp -= self.greenLike
+                self.redLike += (temp / 2)
+                self.blueLike += (temp / 2)
+                if self.redLike < 0:
+                    self.blueLike += self.redLike
+                    self.redLike = 0
+                elif self.blueLike < 0:
+                    self.redLike += self.blueLike
+                    self.blueLike = 0
+                if self.redLike < 0 or self.blueLike < 0 or self.greenLike < 0 or np.round(self.redLike + self.greenLike + self.blueLike) != 1:
+                    print("GREEN WON R:%f B:%f G:%f T:%f counted: %f" % (self.redLike,self.blueLike,self.greenLike,temp,self.redLike + self.greenLike + self.blueLike))
+
 
 # Bereid scherm voor op visualisatie van automata
 def visualize_dancefloor():
@@ -84,7 +117,6 @@ def visualize_dancefloor():
                     crowd[x][y].influence(crowd[x + 1][y])
                 crowd[x][y].drawperson()
         pygame.display.update()
-        time.sleep(0.1)
 
     while 1:
         for event in pygame.event.get():
