@@ -12,6 +12,7 @@ width, height = 500, 500
 mqttclient = mqtt("143.129.39.101", 1883)
 screen = pygame.display.set_mode((width, height))
 
+
 class Person:
     'Common base class for all employees'
 
@@ -26,65 +27,29 @@ class Person:
 
     def drawperson(self):
         if self.redLike >= self.blueLike and self.redLike >= self.greenLike:
-            pygame.draw.rect(screen, (np.floor(255*self.redLike), 0, 0), self.rect)
+            pygame.draw.rect(screen, (np.floor(255 * self.redLike), 0, 0), self.rect)
         elif self.blueLike >= self.redLike and self.blueLike >= self.greenLike:
-            pygame.draw.rect(screen, (0, np.floor(255*self.blueLike), 0), self.rect)
+            pygame.draw.rect(screen, (0, np.floor(255 * self.blueLike), 0), self.rect)
         elif self.greenLike >= self.blueLike and self.greenLike >= self.redLike:
-            pygame.draw.rect(screen, (0, 0, np.floor(255*self.greenLike)), self.rect)
+            pygame.draw.rect(screen, (0, 0, np.floor(255 * self.greenLike)), self.rect)
 
     def influence(self, neighbour):
-        ran = random.uniform(0, 1)
         if neighbour.redLike >= neighbour.blueLike and neighbour.redLike >= neighbour.greenLike:
-                influencefactor = (0.5 * neighbour.redLike) + (0.5 * ran)
-                # print("PIXEL %d %d" % (self.x,self.y))
-                # print("RED NR:%f ran:%f I:%f R:%f B:%f G:%f" % (neighbour.redLike,ran,influencefactor,self.redLike,self.blueLike,self.greenLike))
-                temp = self.redLike
-                self.redLike = (0.5 * self.redLike) + (0.5 * influencefactor)
-                temp -= self.redLike
-                self.blueLike += (temp / 2)
-                self.greenLike += (temp / 2)
-                if self.blueLike < 0:
-                    self.greenLike += self.blueLike
-                    self.blueLike = 0
-                elif self.greenLike < 0:
-                    self.blueLike += self.greenLike
-                    self.greenLike = 0
-                if self.redLike < 0 or self.blueLike < 0 or self.greenLike < 0 or np.round(self.redLike + self.greenLike + self.blueLike) != 1.00000:
-                    print("RED WON R:%f B:%f G:%f T:%f counted: %f" % (self.redLike,self.blueLike,self.greenLike,temp,np.round(self.redLike + self.greenLike + self.blueLike)))
+            influencefactor = (0.5 * neighbour.redLike) + (0.5 * random.uniform(0, 1))
+            self.redLike = (0.5 * self.redLike) + (0.5 * influencefactor)
+            self.blueLike = self.blueLike / 2
+            self.greenLike = self.greenLike / 2
         elif neighbour.blueLike >= neighbour.redLike and neighbour.blueLike >= neighbour.greenLike:
-                influencefactor = (0.5 * neighbour.blueLike) + (0.5 * ran)
-                # print("PIXEL %d %d" % (self.x,self.y))
-                # print("BLUE NR:%f ran:%f I:%f R:%f B:%f G:%f" % (neighbour.blueLike,ran,influencefactor,self.redLike,self.blueLike,self.greenLike))
-                temp = self.blueLike
-                self.blueLike = (0.5 * self.blueLike) + (0.5 * influencefactor)
-                temp -= self.blueLike
-                self.redLike += (temp / 2)
-                self.greenLike += (temp / 2)
-                if self.redLike < 0:
-                    self.greenLike += self.redLike
-                    self.redLike = 0
-                elif self.greenLike < 0:
-                    self.redLike += self.greenLike
-                    self.greenLike = 0
-                if self.redLike < 0 or self.blueLike < 0 or self.greenLike < 0 or np.round(self.redLike + self.greenLike + self.blueLike) != 1:
-                    print("BLUE WON R:%f B:%f G:%f T:%f counted: %f" % (self.redLike,self.blueLike,self.greenLike,temp,self.redLike + self.greenLike + self.blueLike))
+            influencefactor = (0.5 * neighbour.blueLike) + (0.5 * random.uniform(0, 1))
+            self.blueLike = (0.5 * self.blueLike) + (0.5 * influencefactor)
+            self.redLike = self.redLike / 2
+            self.greenLike = self.greenLike / 2
         elif neighbour.greenLike >= neighbour.blueLike and neighbour.greenLike >= neighbour.redLike:
-                influencefactor = (0.5 * neighbour.greenLike) + (0.5 * ran)
-                # print("PIXEL %d %d" % (self.x,self.y))
-                # print("GREEN NR:%f ran:%f I:%f R:%f B:%f G:%f" % (neighbour.greenLike,ran,influencefactor,self.redLike,self.blueLike,self.greenLike))
-                temp = self.greenLike
-                self.greenLike = (0.5 * self.greenLike) + (0.5 * influencefactor)
-                temp -= self.greenLike
-                self.redLike += (temp / 2)
-                self.blueLike += (temp / 2)
-                if self.redLike < 0:
-                    self.blueLike += self.redLike
-                    self.redLike = 0
-                elif self.blueLike < 0:
-                    self.redLike += self.blueLike
-                    self.blueLike = 0
-                if self.redLike < 0 or self.blueLike < 0 or self.greenLike < 0 or np.round(self.redLike + self.greenLike + self.blueLike) != 1:
-                    print("GREEN WON R:%f B:%f G:%f T:%f counted: %f" % (self.redLike,self.blueLike,self.greenLike,temp,self.redLike + self.greenLike + self.blueLike))
+            influencefactor = (0.5 * neighbour.greenLike) + (0.5 * random.uniform(0, 1))
+            self.greenLike = (0.5 * self.greenLike) + (0.5 * influencefactor)
+            self.redLike = self.redLike / 2
+            self.blueLike = self.blueLike / 2
+        # print "r %f g %f b %f" % (self.redLike, self.blueLike, self.greenLike)
 
 
 # Bereid scherm voor op visualisatie van automata
@@ -99,14 +64,14 @@ def visualize_dancefloor():
     while 1:
         for x in range(0, 50):
             for y in range(0, 50):
-                if x != 0 and y != 0:
-                    crowd[x][y].influence(crowd[x - 1][y - 1])
-                if x != 49 and y != 49:
-                    crowd[x][y].influence(crowd[x + 1][y + 1])
-                if x != 0 and y != 49:
-                    crowd[x][y].influence(crowd[x - 1][y + 1])
-                if x != 49 and y != 0:
-                    crowd[x][y].influence(crowd[x + 1][y - 1])
+                # if x != 0 and y != 0:
+                #     crowd[x][y].influence(crowd[x - 1][y - 1])
+                # if x != 49 and y != 49:
+                #     crowd[x][y].influence(crowd[x + 1][y + 1])
+                # if x != 0 and y != 49:
+                #     crowd[x][y].influence(crowd[x - 1][y + 1])
+                # if x != 49 and y != 0:
+                #     crowd[x][y].influence(crowd[x + 1][y - 1])
                 if y != 49:
                     crowd[x][y].influence(crowd[x][y + 1])
                 if y != 0:
@@ -115,6 +80,7 @@ def visualize_dancefloor():
                     crowd[x][y].influence(crowd[x - 1][y])
                 if x != 49:
                     crowd[x][y].influence(crowd[x + 1][y])
+                print "x:%d y:%d" % (x,y)
                 crowd[x][y].drawperson()
         pygame.display.update()
 
