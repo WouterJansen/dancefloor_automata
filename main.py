@@ -76,27 +76,27 @@ def visualize_dancefloor():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 sys.exit()
-            else:
-                for x in range(0, width // 10):
-                    for y in range(0, height // 10):
-                        if x != 0 and y != 0:
-                            crowd[x][y].influence(crowd[x - 1][y - 1])
-                        if x != width // 10 - 1 and y != height // 10 - 1:
-                            crowd[x][y].influence(crowd[x + 1][y + 1])
-                        if x != 0 and y != height // 10 - 1:
-                            crowd[x][y].influence(crowd[x - 1][y + 1])
-                        if x != width // 10 - 1 and y != 0:
-                            crowd[x][y].influence(crowd[x + 1][y - 1])
-                        if y != height // 10 - 1:
-                            crowd[x][y].influence(crowd[x][y + 1])
-                        if y != 0:
-                            crowd[x][y].influence(crowd[x][y - 1])
-                        if x != 0:
-                            crowd[x][y].influence(crowd[x - 1][y])
-                        if x != width // 10 - 1:
-                            crowd[x][y].influence(crowd[x + 1][y])
-                        crowd[x][y].drawperson(screen)
-                pygame.display.update()
+        for x in range(0, width // 10):
+            for y in range(0, height // 10):
+                # if x != 0 and y != 0:
+                #     crowd[x][y].influence(crowd[x - 1][y - 1])
+                # if x != width // 10 - 1 and y != height // 10 - 1:
+                #     crowd[x][y].influence(crowd[x + 1][y + 1])
+                # if x != 0 and y != height // 10 - 1:
+                #     crowd[x][y].influence(crowd[x - 1][y + 1])
+                # if x != width // 10 - 1 and y != 0:
+                #     crowd[x][y].influence(crowd[x + 1][y - 1])
+                if y != height // 10 - 1:
+                    crowd[x][y].influence(crowd[x][y + 1])
+                if x != width // 10 - 1:
+                    crowd[x][y].influence(crowd[x + 1][y])
+                if y != 0:
+                    crowd[x][y].influence(crowd[x][y - 1])
+                if x != 0:
+                    crowd[x][y].influence(crowd[x - 1][y])
+
+                crowd[x][y].drawperson(screen)
+        pygame.display.update()
 
 
 def start_dj_listener():
