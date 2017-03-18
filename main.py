@@ -30,21 +30,62 @@ class Person:
             pygame.draw.rect(screen, (0, 0, np.floor(255 * self.greenLike)), self.rect)
 
     def influence(self, neighbour):
+        #print("1 r %f b %f g %f", (self.redLike, self.blueLike, self.greenLike))
         if neighbour.redLike >= neighbour.blueLike and neighbour.redLike >= neighbour.greenLike:
+            #print("1")
             influencefactor = (0.5 * neighbour.redLike) + (0.5 * random.uniform(0, 1))
             self.redLike = (0.5 * self.redLike) + (0.5 * influencefactor)
-            self.blueLike /= 2
-            self.greenLike /= 2
+            self.blueLike -= (influencefactor / 4)
+            self.greenLike -= (influencefactor / 4)
+            self.blueLike = np.abs(self.blueLike)
+            self.greenLike = np.abs(self.greenLike)
+            # if self.blueLike < 0:
+            #     self.greenLike += self.blueLike
+            #     if self.greenLike < 0:
+            #         self.greenLike = 0
+            #     self.blueLike = 0
+            # elif self.greenLike < 0:
+            #     self.blueLike += self.greenLike
+            #     if self.blueLike < 0:
+            #         self.blueLike = 0
+            #     self.greenLike = 0
         elif neighbour.blueLike >= neighbour.redLike and neighbour.blueLike >= neighbour.greenLike:
+            #print("2")
             influencefactor = (0.5 * neighbour.blueLike) + (0.5 * random.uniform(0, 1))
             self.blueLike = (0.5 * self.blueLike) + (0.5 * influencefactor)
-            self.redLike /= 2
-            self.greenLike /= 2
+            self.redLike -= (influencefactor / 4)
+            self.greenLike -= (influencefactor / 4)
+            self.redLike = np.abs(self.redLike)
+            self.greenLike = np.abs(self.greenLike)
+            # if self.redLike < 0:
+            #     self.greenLike += self.redLike
+            #     if self.greenLike < 0:
+            #         self.greenLike = 0
+            #     self.redLike = 0
+            # elif self.greenLike < 0:
+            #     self.redLike += self.greenLike
+            #     if self.redLike < 0:
+            #         self.redLike = 0
+            #     self.greenLike = 0
         elif neighbour.greenLike >= neighbour.blueLike and neighbour.greenLike >= neighbour.redLike:
+            #print("3")
             influencefactor = (0.5 * neighbour.greenLike) + (0.5 * random.uniform(0, 1))
             self.greenLike = (0.5 * self.greenLike) + (0.5 * influencefactor)
-            self.redLike /= 2
-            self.blueLike /= 2
+            self.redLike -= (influencefactor / 4)
+            self.blueLike -= (influencefactor / 4)
+            self.redLike = np.abs(self.redLike)
+            self.blueLike = np.abs(self.blueLike)
+            # if self.redLike < 0:
+            #     self.blueLike += self.redLike
+            #     if self.blueLike < 0:
+            #         self.blueLike = 0
+            #     self.redLike = 0
+            # elif self.blueLike < 0:
+            #     self.redLike += self.blueLike
+            #     if self.redLike < 0:
+            #         self.redLike = 0
+            #     self.blueLike = 0
+        #print("2 r %f b %f g %f", (self.redLike, self.blueLike, self.greenLike))
 
     def sendOpinion(self, msg):
         if msg == "Rock":
@@ -86,15 +127,14 @@ def visualize_dancefloor():
                 #     crowd[x][y].influence(crowd[x - 1][y + 1])
                 # if x != width // 10 - 1 and y != 0:
                 #     crowd[x][y].influence(crowd[x + 1][y - 1])
-                if y != height // 10 - 1:
-                    crowd[x][y].influence(crowd[x][y + 1])
                 if x != width // 10 - 1:
                     crowd[x][y].influence(crowd[x + 1][y])
-                if y != 0:
-                    crowd[x][y].influence(crowd[x][y - 1])
+                if y != height // 10 - 1:
+                    crowd[x][y].influence(crowd[x][y + 1])
                 if x != 0:
                     crowd[x][y].influence(crowd[x - 1][y])
-
+                if y != 0:
+                    crowd[x][y].influence(crowd[x][y - 1])
                 crowd[x][y].drawperson(screen)
         pygame.display.update()
 
